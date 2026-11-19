@@ -132,6 +132,7 @@
     </section>
   </main>
 
+  <script src="backups/lexicon(local).js"></script>
   <script src="lexicon.js"></script>
   <script>
     const TYPE_LABELS = {
@@ -252,11 +253,11 @@
         }
       });
 
-      const found = items.find(it => it.id === targetId) || items[0];
-      if (!found) {
-        document.getElementById('morpheme-hero').innerHTML = '<p class="text-slate-600">找不到詞素資料，請確認 lexicon.js 是否正確載入。</p>';
+      if (!items.length) {
+        document.getElementById('detail-form').textContent = '載入中...';
         return;
       }
+      const found = items.find(it => it.id === targetId) || items[0];
 
       document.title = found.form + ' - 西班牙文全構詞詞素字典';
       const badge = TYPE_LABELS[found.type] || TYPE_LABELS.root;
