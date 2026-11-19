@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首頁總覽 - 西班牙文全構詞詞素字典</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .alpha-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .alpha-bar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 全域頂部導覽列 -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-6">
+        <a href="index.html" id="brand-home-link" class="flex items-center gap-2.5 group">
+          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white font-bold text-sm flex items-center justify-center shadow-sm group-hover:bg-slate-800 transition-colors">Ñ</span>
+          <span class="font-bold text-slate-900 text-base sm:text-lg tracking-tight">西班牙文全構詞詞素字典</span>
+        </a>
+        <nav class="hidden sm:flex items-center gap-5 text-sm">
+          <a href="index.html" id="nav-home" class="text-slate-900 font-bold border-b-2 border-slate-900 pb-0.5 transition-colors">首頁</a>
+          <a href="#all-morphemes" id="nav-all" class="text-slate-600 hover:text-slate-900 font-medium border-b-2 border-transparent pb-0.5 transition-colors">所有詞素</a>
+        </nav>
+      </div>
+
+      <!-- 右側快速搜尋 -->
+      <form id="nav-search-form" class="flex items-center gap-1.5 w-44 sm:w-64">
+        <div class="relative flex-1">
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input
+            type="text"
+            id="nav-search-input"
+            placeholder="快速搜尋..."
+            class="w-full pl-8 pr-2.5 py-1.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-slate-400 transition-colors"
+          />
+        </div>
+        <button type="submit" class="px-2.5 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shrink-0">
+          搜尋
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <!-- 詞素查詢區塊 -->
+    <section class="bg-white rounded-2xl border border-slate-200/90 shadow-sm px-6 py-10 sm:px-12 sm:py-12">
+      <div class="max-w-4xl mx-auto text-center space-y-5">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center justify-center gap-2.5">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7 text-slate-800" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <span>詞素查詢</span>
+        </h1>
+        <form id="main-search-form" class="flex flex-col sm:flex-row gap-3.5">
+          <input
+            type="text"
+            id="main-search-input"
+            placeholder="請輸入文字...（詞素、西班牙文單字或中文意思）"
+            class="flex-1 px-5 py-4 sm:py-4.5 text-base sm:text-lg bg-slate-50/70 border border-slate-300 rounded-xl focus:outline-none focus:bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all"
+          />
+          <button
+            type="submit"
+            class="px-8 py-4 sm:py-4.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-base sm:text-lg rounded-xl transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm"
+          >
+            <span>搜尋</span>
+            <span>→</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 本日詞素卡片 (整張卡片可點擊跳轉、無「查看構詞拆解」按鈕、「本日詞素」標題再放大) -->
+    <a
+      id="daily-detail-link"
+      href="detail.html"
+      class="group block bg-white rounded-2xl border border-slate-200/90 hover:border-amber-300 shadow-sm hover:shadow-md transition-all px-6 py-9 sm:px-10 sm:py-10 cursor-pointer"
+    >
+      <div class="max-w-2xl mx-auto text-center space-y-3.5">
+        <div class="text-xl sm:text-2xl font-extrabold tracking-widest text-amber-700">本日詞素</div>
+        <div class="flex items-center justify-center gap-2.5 flex-wrap">
+          <h2 id="daily-form" class="text-2xl sm:text-4xl font-extrabold text-slate-900 group-hover:text-amber-800 transition-colors tracking-tight">—</h2>
+          <span id="daily-type-badge" class="px-2.5 py-0.5 text-xs font-semibold rounded-full border">字根</span>
+        </div>
+        <p id="daily-meaning" class="text-base sm:text-xl font-semibold text-amber-800 pt-0.5">—</p>
+        <div id="daily-examples" class="pt-2 flex items-center justify-center gap-2 flex-wrap"></div>
+      </div>
+    </a>
+
+    <!-- 所有詞素索引區 -->
+    <section id="all-morphemes" class="space-y-4 pt-1 scroll-mt-20">
+      <!-- 分類頁籤與數量 -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="inline-flex bg-white p-1 rounded-xl border border-slate-200 shadow-xs" id="category-tabs">
+          <button data-cat="all" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-slate-900 text-white transition-colors">全部</button>
+          <button data-cat="prefix" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">字首</button>
+          <button data-cat="root" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">字根</button>
+          <button data-cat="suffix" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">字尾</button>
+        </div>
+        <div class="text-xs sm:text-sm text-slate-500">
+          顯示 <span id="visible-count" class="font-bold text-slate-900">0</span> 個詞素
+        </div>
+      </div>
+
+      <!-- A-Z 字母索引列 -->
+      <div class="bg-white rounded-xl border border-slate-200 p-2 flex items-center gap-1 overflow-x-auto alpha-bar" id="alpha-bar"></div>
+
+      <!-- 詞素卡片網格 -->
+      <div id="morpheme-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+  </main>
+
+  <script src="lexicon.js"></script>
+  <script>
+    const TYPE_LABELS = {
+      prefix: { text: '字首', cls: 'bg-sky-50 text-sky-700 border-sky-200' },
+      root:   { text: '字根', cls: 'bg-amber-50 text-amber-700 border-amber-200' },
+      suffix: { text: '字尾', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+    };
+
+    function getLexiconItems() {
+      const morphemes = Array.isArray(window.MORPHEMES) ? window.MORPHEMES : [];
+      const words = Array.isArray(window.WORDS) ? window.WORDS : [];
+
+      const morphemeMap = new Map();
+      const items = morphemes.map((row, idx) => {
+        const [id, type, form, origin, meaning] = row;
+        const clean = (form || '').replace(/^-+/, '').trim();
+        const firstChar = clean.charAt(0).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+        const letter = /^[A-Z]$/.test(firstChar) ? firstChar : '#';
+        const item = {
+          idx,
+          id: String(id),
+          type: type || 'root',
+          form: form || '',
+          origin: origin || '',
+          meaning: meaning || '',
+          letter,
+          words: []
+        };
+        morphemeMap.set(item.id, item);
+        return item;
+      });
+
+      words.forEach(w => {
+        const [word, pos, zh, morphemeIds, customBreakdown] = w;
+        const ids = Array.isArray(morphemeIds) ? morphemeIds.map(String) : [];
+
+        const autoBreakdown = customBreakdown || ids.map(mId => {
+          const m = morphemeMap.get(mId);
+          if (!m) return mId;
+          const shortMeaning = m.meaning
+            .replace(/^.*表示「([^」]+)」.*$/, '$1')
+            .replace(/（[^）]*）/g, '')
+            .trim();
+          return `${m.form} (${shortMeaning})`;
+        }).join(' + ');
+
+        const wordObj = {
+          word: word || '',
+          pos: pos || '',
+          breakdown: autoBreakdown,
+          zh: zh || '',
+          morphemeIds: ids
+        };
+
+        ids.forEach(mId => {
+          const targetMorpheme = morphemeMap.get(mId);
+          if (targetMorpheme) {
+            targetMorpheme.words.push(wordObj);
+          }
+        });
+      });
+
+      return items;
+    }
+
+    document.getElementById('nav-search-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const q = (document.getElementById('nav-search-input')?.value || '').trim();
+      if (q) {
+        window.location.href = 'search.html?q=' + encodeURIComponent(q);
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('lexiconUpdated', () => { if (typeof window.__renderLexiconPage === 'function') window.__renderLexiconPage(); });
+    (window.__renderLexiconPage = function() {
+      const items = getLexiconItems();
+      const STATE_KEY = 'es_home_view_state_v1';
+      const LAST_DAILY_KEY = 'es_last_daily_id_v1';
+
+      let currentCat = 'all';
+      let currentLetter = 'ALL';
+
+      function restoreStateIfNeeded() {
+        try {
+          const saved = JSON.parse(sessionStorage.getItem(STATE_KEY) || 'null');
+          if (saved) {
+            currentCat = saved.cat || 'all';
+            currentLetter = saved.letter || 'ALL';
+            return saved.scrollY || 0;
+          }
+        } catch (e) {}
+        return 0;
+      }
+
+      function saveViewState() {
+        sessionStorage.setItem(STATE_KEY, JSON.stringify({
+          cat: currentCat,
+          letter: currentLetter,
+          scrollY: window.scrollY
+        }));
+      }
+
+      function renderDailyMorpheme() {
+        if (!items.length) return;
+        const lastId = sessionStorage.getItem(LAST_DAILY_KEY);
+        let candidates = items;
+        if (items.length > 1 && lastId) {
+          candidates = items.filter(it => it.id !== lastId);
+        }
+        const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+        sessionStorage.setItem(LAST_DAILY_KEY, chosen.id);
+
+        const badge = TYPE_LABELS[chosen.type] || TYPE_LABELS.root;
+        document.getElementById('daily-form').textContent = chosen.form;
+        const badgeEl = document.getElementById('daily-type-badge');
+        badgeEl.textContent = badge.text;
+        badgeEl.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full border ' + badge.cls;
+        document.getElementById('daily-meaning').textContent = chosen.meaning;
+
+        const detailLink = document.getElementById('daily-detail-link');
+        detailLink.href = 'detail.html?id=' + encodeURIComponent(chosen.id);
+        detailLink.addEventListener('click', saveViewState);
+
+        const exContainer = document.getElementById('daily-examples');
+        exContainer.innerHTML = chosen.words.slice(0, 3).map(w =>
+          `<span class="px-3 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-xs text-slate-700">
+            <strong class="font-semibold text-slate-900">${escapeHtml(w.word)}</strong>
+            <span class="text-slate-500 ml-1">${escapeHtml(w.zh)}</span>
+          </span>`
+        ).join('');
+      }
+
+      function updateCategoryCounts() {
+        const counts = {
+          all: items.length,
+          prefix: items.filter(i => i.type === 'prefix').length,
+          root: items.filter(i => i.type === 'root').length,
+          suffix: items.filter(i => i.type === 'suffix').length
+        };
+        const labels = { all: '全部', prefix: '字首', root: '字根', suffix: '字尾' };
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+          const cat = btn.dataset.cat;
+          btn.textContent = `${labels[cat]} (${counts[cat]})`;
+          if (cat === currentCat) {
+            btn.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-slate-900 text-white transition-colors';
+          } else {
+            btn.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors';
+          }
+        });
+      }
+
+      function renderAlphaBar() {
+        const catItems = currentCat === 'all' ? items : items.filter(i => i.type === currentCat);
+        const availableLetters = new Set(catItems.map(i => i.letter));
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+        let html = `<button data-letter="ALL" class="alpha-btn px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-colors ${
+          currentLetter === 'ALL' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+        }">全部</button>`;
+
+        alphabet.forEach(ch => {
+          const hasItems = availableLetters.has(ch);
+          const isActive = currentLetter === ch;
+          if (!hasItems) {
+            html += `<span class="w-7 h-7 flex items-center justify-center text-xs text-slate-300 shrink-0 select-none">${ch}</span>`;
+          } else {
+            html += `<button data-letter="${ch}" class="alpha-btn w-7 h-7 rounded-lg text-xs font-semibold shrink-0 transition-colors ${
+              isActive ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100'
+            }">${ch}</button>`;
+          }
+        });
+
+        const bar = document.getElementById('alpha-bar');
+        bar.innerHTML = html;
+        bar.querySelectorAll('.alpha-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentLetter = btn.dataset.letter;
+            renderAlphaBar();
+            renderGrid();
+            saveViewState();
+          });
+        });
+      }
+
+      function renderGrid() {
+        let filtered = currentCat === 'all' ? items : items.filter(i => i.type === currentCat);
+        if (currentLetter !== 'ALL') {
+          filtered = filtered.filter(i => i.letter === currentLetter);
+        }
+
+        document.getElementById('visible-count').textContent = filtered.length;
+        const grid = document.getElementById('morpheme-grid');
+
+        if (!filtered.length) {
+          grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-10 text-center text-slate-500 text-sm">此篩選條件下尚無詞素資料</div>`;
+          return;
+        }
+
+        grid.innerHTML = filtered.map(item => {
+          const badge = TYPE_LABELS[item.type] || TYPE_LABELS.root;
+          const previewWords = item.words.slice(0, 3).map(w => escapeHtml(w.word)).join(' · ');
+          return `
+            <a href="detail.html?id=${encodeURIComponent(item.id)}" class="card-link group bg-white rounded-2xl border border-slate-200/90 hover:border-slate-300 hover:shadow-md transition-all p-5 flex flex-col justify-between">
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="px-2 py-0.5 text-[11px] font-semibold rounded-md border ${badge.cls}">${badge.text}</span>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-amber-800 transition-colors">${escapeHtml(item.form)}</h3>
+                <p class="text-sm font-medium text-slate-700 line-clamp-2">${escapeHtml(item.meaning)}</p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span class="truncate pr-2">${previewWords || '點擊查看構詞'}</span>
+                <span class="text-slate-400 group-hover:text-slate-900 font-semibold shrink-0">→</span>
+              </div>
+            </a>
+          `;
+        }).join('');
+
+        grid.querySelectorAll('.card-link').forEach(link => {
+          link.addEventListener('click', saveViewState);
+        });
+      }
+
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentCat = btn.dataset.cat;
+          currentLetter = 'ALL';
+          updateCategoryCounts();
+          renderAlphaBar();
+          renderGrid();
+          saveViewState();
+        });
+      });
+
+      document.getElementById('main-search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const q = (document.getElementById('main-search-input').value || '').trim();
+        if (q) {
+          saveViewState();
+          window.location.href = 'search.html?q=' + encodeURIComponent(q);
+        }
+      });
+
+      const navHomeEl = document.getElementById('nav-home');
+      const navAllEl = document.getElementById('nav-all');
+
+      function setActiveNav(tab) {
+        if (!navHomeEl || !navAllEl) return;
+        const activeCls = 'text-slate-900 font-bold border-b-2 border-slate-900 pb-0.5 transition-colors';
+        const inactiveCls = 'text-slate-600 hover:text-slate-900 font-medium border-b-2 border-transparent pb-0.5 transition-colors';
+        navHomeEl.className = tab === 'home' ? activeCls : inactiveCls;
+        navAllEl.className = tab === 'all' ? activeCls : inactiveCls;
+      }
+
+      function scrollToTopOnHome(e) {
+        e.preventDefault();
+        setActiveNav('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      navHomeEl?.addEventListener('click', scrollToTopOnHome);
+      document.getElementById('brand-home-link')?.addEventListener('click', scrollToTopOnHome);
+
+      navAllEl?.addEventListener('click', function(e) {
+        const target = document.getElementById('all-morphemes');
+        if (target) {
+          e.preventDefault();
+          setActiveNav('all');
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      const savedScrollY = restoreStateIfNeeded();
+      renderDailyMorpheme();
+      updateCategoryCounts();
+      renderAlphaBar();
+      renderGrid();
+
+      if (savedScrollY > 0 && !window.location.hash) {
+        requestAnimationFrame(() => window.scrollTo(0, savedScrollY));
+      }
+    })();
+  </script>
+</body>
+</html>

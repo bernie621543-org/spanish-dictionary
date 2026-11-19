@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>詞素詳細頁 - 西班牙文全構詞詞素字典</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 全域頂部導覽列 -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="flex items-center gap-2.5 group">
+          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white font-bold text-sm flex items-center justify-center shadow-sm group-hover:bg-slate-800 transition-colors">Ñ</span>
+          <span class="font-bold text-slate-900 text-base sm:text-lg tracking-tight">西班牙文全構詞詞素字典</span>
+        </a>
+        <nav class="hidden sm:flex items-center gap-5 text-sm">
+          <a href="index.html" id="nav-home" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">首頁</a>
+          <a href="index.html#all-morphemes" id="nav-all" class="text-slate-600 font-medium">所有詞素</a>
+        </nav>
+      </div>
+
+      <!-- 右側快速搜尋 -->
+      <form id="nav-search-form" class="flex items-center gap-1.5 w-44 sm:w-64">
+        <div class="relative flex-1">
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input
+            type="text"
+            id="nav-search-input"
+            placeholder="快速搜尋..."
+            class="w-full pl-8 pr-2.5 py-1.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-slate-400 transition-colors"
+          />
+        </div>
+        <button type="submit" class="px-2.5 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shrink-0">
+          搜尋
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-7 space-y-6">
+    <!-- 返回按鈕列 -->
+    <div class="flex items-center justify-between">
+      <button
+        type="button"
+        id="back-btn"
+        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 shadow-2xs transition-colors"
+      >
+        <span>←</span>
+        <span id="back-btn-label">返回</span>
+      </button>
+    </div>
+
+    <!-- 1. 詞素核心資訊主卡片 -->
+    <section id="morpheme-hero" class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-9 space-y-4">
+      <div class="flex items-center gap-3 flex-wrap">
+        <h1 id="detail-form" class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">—</h1>
+        <span id="detail-type-badge" class="px-3 py-1 text-xs sm:text-sm font-bold rounded-full border">字根</span>
+      </div>
+
+      <p id="detail-meaning" class="text-xl sm:text-3xl font-bold text-amber-800 leading-snug pt-0.5">—</p>
+
+      <div class="pt-3 border-t border-slate-200">
+        <p class="text-xs sm:text-sm text-slate-500">
+          <span class="font-semibold text-slate-600">詞源：</span>
+          <span id="detail-origin">—</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. 查詢單字專屬區塊 (無多餘小標籤、明顯分隔線) -->
+    <section id="selected-word-section" class="hidden bg-white rounded-2xl border-2 border-amber-300/90 shadow-sm overflow-hidden">
+      <div class="px-6 py-3.5 bg-amber-50/80 border-b border-amber-200 flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+        <h2 class="text-base sm:text-lg font-bold text-slate-900">查詢單字</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-slate-300">
+        <!-- 左側：西文單字 + 詞性 -->
+        <div class="md:col-span-4 px-6 py-5 sm:px-7 sm:py-6 flex items-center gap-2.5 flex-wrap">
+          <span id="selected-word-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">—</span>
+          <span id="selected-word-pos" class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">—</span>
+        </div>
+
+        <!-- 中間：中文釋義 -->
+        <div class="md:col-span-3 px-6 py-5 sm:px-7 sm:py-6 flex items-center">
+          <p id="selected-word-zh" class="text-lg sm:text-xl font-bold text-slate-900">—</p>
+        </div>
+
+        <!-- 右側：構詞拆解方格 -->
+        <div class="md:col-span-5 px-6 py-5 sm:px-7 sm:py-6 flex items-center">
+          <div id="selected-word-breakdown"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 衍生單字表 (明顯的欄與列分隔線 + 查詢單字醒目黃底標示) -->
+    <section class="bg-white rounded-2xl border border-slate-300/90 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-300 flex items-center gap-3">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900">衍生單字表</h2>
+        <span id="word-total-badge" class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold">共 0 個單字</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100/90 border-b-2 border-slate-300 divide-x divide-slate-300 text-xs font-extrabold text-slate-600 uppercase tracking-wider">
+              <th class="py-3.5 px-6 w-1/5">西文單字</th>
+              <th class="py-3.5 px-4 w-24 text-center">詞性</th>
+              <th class="py-3.5 px-5 w-2/5">構詞拆解</th>
+              <th class="py-3.5 px-6">中文</th>
+            </tr>
+          </thead>
+          <tbody id="words-tbody" class="divide-y divide-slate-200 text-sm"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="lexicon.js"></script>
+  <script>
+    const TYPE_LABELS = {
+      prefix: { text: '字首', cls: 'bg-sky-50 text-sky-700 border-sky-200' },
+      root:   { text: '字根', cls: 'bg-amber-50 text-amber-700 border-amber-200' },
+      suffix: { text: '字尾', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+    };
+
+    function getLexiconItems() {
+      const morphemes = Array.isArray(window.MORPHEMES) ? window.MORPHEMES : [];
+      const words = Array.isArray(window.WORDS) ? window.WORDS : [];
+
+      const morphemeMap = new Map();
+      const items = morphemes.map((row, idx) => {
+        const [id, type, form, origin, meaning] = row;
+        const clean = (form || '').replace(/^-+/, '').trim();
+        const firstChar = clean.charAt(0).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+        const letter = /^[A-Z]$/.test(firstChar) ? firstChar : '#';
+        const item = {
+          idx,
+          id: String(id),
+          type: type || 'root',
+          form: form || '',
+          origin: origin || '',
+          meaning: meaning || '',
+          letter,
+          words: []
+        };
+        morphemeMap.set(item.id, item);
+        return item;
+      });
+
+      words.forEach(w => {
+        const [word, pos, zh, morphemeIds, customBreakdown] = w;
+        const ids = Array.isArray(morphemeIds) ? morphemeIds.map(String) : [];
+
+        const autoBreakdown = customBreakdown || ids.map(mId => {
+          const m = morphemeMap.get(mId);
+          if (!m) return mId;
+          const shortMeaning = m.meaning
+            .replace(/^.*表示「([^」]+)」.*$/, '$1')
+            .replace(/（[^）]*）/g, '')
+            .trim();
+          return `${m.form} (${shortMeaning})`;
+        }).join(' + ');
+
+        const wordObj = {
+          word: word || '',
+          pos: pos || '',
+          breakdown: autoBreakdown,
+          zh: zh || '',
+          morphemeIds: ids
+        };
+
+        ids.forEach(mId => {
+          const targetMorpheme = morphemeMap.get(mId);
+          if (targetMorpheme) {
+            targetMorpheme.words.push(wordObj);
+          }
+        });
+      });
+
+      return items;
+    }
+
+    document.getElementById('nav-search-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const q = (document.getElementById('nav-search-input')?.value || '').trim();
+      if (q) {
+        window.location.href = 'search.html?q=' + encodeURIComponent(q);
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('lexiconUpdated', () => { if (typeof window.__renderLexiconPage === 'function') window.__renderLexiconPage(); });
+    (window.__renderLexiconPage = function() {
+      const items = getLexiconItems();
+      const params = new URLSearchParams(window.location.search);
+      const targetId = params.get('id');
+      const rawWordParam = (params.get('word') || '').trim();
+      const highlightWord = rawWordParam.toLowerCase();
+      const fromPage = params.get('from');
+      const fromQuery = params.get('q');
+
+      const backLabelEl = document.getElementById('back-btn-label');
+      if (fromPage === 'search') {
+        backLabelEl.textContent = fromQuery ? `返回「${fromQuery}」搜尋結果` : '返回搜尋結果';
+      }
+
+      document.getElementById('back-btn').addEventListener('click', function() {
+        if (fromPage === 'search') {
+          const targetSearchUrl = 'search.html' + (fromQuery !== null ? '?q=' + encodeURIComponent(fromQuery) : '');
+          window.location.href = targetSearchUrl;
+          return;
+        }
+        try {
+          const ret = JSON.parse(sessionStorage.getItem('es_detail_return_v1') || 'null');
+          if (ret && ret.from === 'search' && ret.url) {
+            window.location.href = ret.url;
+            return;
+          }
+        } catch (e) {}
+        if (document.referrer && document.referrer.includes('search.html')) {
+          window.location.href = document.referrer;
+          return;
+        }
+        if (window.history.length > 1 && document.referrer && document.referrer.includes('index.html')) {
+          window.history.back();
+        } else {
+          window.location.href = 'index.html';
+        }
+      });
+
+      const found = items.find(it => it.id === targetId) || items[0];
+      if (!found) {
+        document.getElementById('morpheme-hero').innerHTML = '<p class="text-slate-600">找不到詞素資料，請確認 lexicon.js 是否正確載入。</p>';
+        return;
+      }
+
+      document.title = found.form + ' - 西班牙文全構詞詞素字典';
+      const badge = TYPE_LABELS[found.type] || TYPE_LABELS.root;
+
+      document.getElementById('detail-form').textContent = found.form;
+      const badgeEl = document.getElementById('detail-type-badge');
+      badgeEl.textContent = badge.text;
+      badgeEl.className = 'px-3 py-1 text-xs sm:text-sm font-bold rounded-full border ' + badge.cls;
+
+      document.getElementById('detail-meaning').textContent = found.meaning;
+      document.getElementById('detail-origin').textContent = found.origin;
+      document.getElementById('word-total-badge').textContent = `共 ${found.words.length} 個單字`;
+
+      // 建立詞素名稱與變體反查表，讓構詞拆解中的詞素方塊可直接點擊跳轉
+      function normalizeMorphemeKey(s) {
+        return String(s || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/\([^)]*\)/g, '')
+          .replace(/^-+|-+$/g, '')
+          .trim();
+      }
+
+      const formExactMap = new Map();
+      const variantLookupMap = new Map();
+      items.forEach(it => {
+        formExactMap.set(it.form.trim().toLowerCase(), it);
+        it.form.split('/').forEach(part => {
+          const k = normalizeMorphemeKey(part);
+          if (k && !variantLookupMap.has(k)) {
+            variantLookupMap.set(k, it);
+          }
+        });
+      });
+
+      function findTargetMorphemeForPart(rawLabel, wordObj, partIdx) {
+        const cleanFull = rawLabel.trim().toLowerCase();
+        // 1. 完全比對詞素 form（自動組裝格式會直接命中）
+        if (formExactMap.has(cleanFull)) {
+          return formExactMap.get(cleanFull);
+        }
+        // 2. 優先從該單字綁定的 morphemeIds 中尋找對應詞素
+        const boundItems = (wordObj && Array.isArray(wordObj.morphemeIds))
+          ? wordObj.morphemeIds.map(id => items.find(it => it.id === id)).filter(Boolean)
+          : [];
+        const normPart = normalizeMorphemeKey(rawLabel);
+        if (normPart) {
+          const inBound = boundItems.find(it =>
+            it.form.split('/').some(p => normalizeMorphemeKey(p) === normPart)
+          );
+          if (inBound) return inBound;
+          if (variantLookupMap.has(normPart)) {
+            return variantLookupMap.get(normPart);
+          }
+        }
+        // 3. 若片段數量與綁定詞素數量一致，按位置對應
+        if (boundItems.length > 0 && partIdx < boundItems.length && boundItems.length > 1) {
+          return boundItems[partIdx];
+        }
+        return null;
+      }
+
+      function buildMorphemeDetailHref(targetItem, wordStr) {
+        let href = 'detail.html?id=' + encodeURIComponent(targetItem.id);
+        if (wordStr) {
+          href += '&word=' + encodeURIComponent(wordStr);
+        }
+        if (fromPage === 'search') {
+          href += '&from=search&q=' + encodeURIComponent(fromQuery || '');
+        }
+        return href;
+      }
+
+      function renderBreakdownBlocks(breakdownStr, wordObj) {
+        const text = String(breakdownStr || '').trim();
+        if (!text) return '';
+        const parts = text.split(/\s*\+\s*/);
+        return `<div class="flex items-center flex-wrap gap-1.5">` + parts.map((part, idx) => {
+          const m = part.match(/^([^()（）]+?)\s*[（(]([^()（）]+)[）)]$/);
+          const rawFormPart = m ? m[1].trim() : part.trim();
+          const targetItem = findTargetMorphemeForPart(rawFormPart, wordObj, idx);
+          const isCurrentPage = targetItem && targetItem.id === found.id;
+
+          let innerHtml = '';
+          if (m) {
+            const formCls = targetItem && !isCurrentPage
+              ? 'font-bold text-slate-900 group-hover:text-amber-800 transition-colors'
+              : 'font-bold text-slate-900';
+            innerHtml = `<span class="${formCls}">${escapeHtml(m[1].trim())}</span><span class="text-slate-500 ml-1.5">${escapeHtml(m[2].trim())}</span>`;
+          } else {
+            innerHtml = `<span class="font-medium text-slate-700">${escapeHtml(part)}</span>`;
+          }
+
+          let chip = '';
+          if (targetItem && !isCurrentPage) {
+            const href = buildMorphemeDetailHref(targetItem, wordObj ? wordObj.word : '');
+            chip = `<a href="${href}" title="前往查看「${escapeHtml(targetItem.form)}」詞素頁面" class="group inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 border border-slate-300/90 hover:border-amber-400 text-xs shadow-2xs transition-all cursor-pointer">${innerHtml}<span class="text-[10px] text-amber-700 opacity-70 group-hover:opacity-100 ml-0.5">↗</span></a>`;
+          } else {
+            chip = `<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-white border border-slate-300/90 text-xs shadow-2xs">${innerHtml}</span>`;
+          }
+
+          return idx > 0
+            ? `<span class="text-slate-400 font-bold text-xs px-0.5">+</span>${chip}`
+            : chip;
+        }).join('') + `</div>`;
+      }
+
+      if (fromPage === 'search' && rawWordParam) {
+        const matchedWordObj = found.words.find(w => w.word.toLowerCase() === highlightWord);
+        if (matchedWordObj) {
+          document.getElementById('selected-word-title').textContent = matchedWordObj.word;
+          document.getElementById('selected-word-pos').textContent = matchedWordObj.pos;
+          document.getElementById('selected-word-zh').textContent = matchedWordObj.zh;
+          document.getElementById('selected-word-breakdown').innerHTML = renderBreakdownBlocks(matchedWordObj.breakdown, matchedWordObj);
+          document.getElementById('selected-word-section').classList.remove('hidden');
+        }
+      }
+
+      const tbody = document.getElementById('words-tbody');
+      tbody.innerHTML = found.words.map(w => {
+        const isHighlighted = highlightWord && w.word.toLowerCase() === highlightWord;
+        const rowClass = isHighlighted
+          ? 'bg-amber-100/85 hover:bg-amber-100 divide-x divide-amber-300/80 border-l-4 border-l-amber-500'
+          : 'hover:bg-slate-50/90 divide-x divide-slate-200';
+        const badgeTag = isHighlighted
+          ? `<span class="ml-2 px-2 py-0.5 rounded-full bg-amber-400/90 text-slate-900 text-[11px] font-extrabold align-middle">查詢</span>`
+          : '';
+        return `
+          <tr class="${rowClass} transition-colors">
+            <td class="py-4 px-6 font-extrabold text-base text-slate-900">${escapeHtml(w.word)}${badgeTag}</td>
+            <td class="py-4 px-4 text-center">
+              <span class="inline-block px-2 py-0.5 rounded bg-slate-100 border border-slate-200/80 text-slate-700 text-xs font-semibold">${escapeHtml(w.pos)}</span>
+            </td>
+            <td class="py-4 px-5">${renderBreakdownBlocks(w.breakdown, w)}</td>
+            <td class="py-4 px-6 font-semibold text-slate-800">${escapeHtml(w.zh)}</td>
+          </tr>
+        `;
+      }).join('');
+    })();
+  </script>
+</body>
+</html>
