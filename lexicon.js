@@ -5,8 +5,8 @@
 // 1. 將 Google 試算表「檔案 → 共用 → 發布到網路」，分別選擇 MORPHEMES 與 WORDS 工作表，格式選「逗號分隔值 (.csv)」
 // 2. 將取得的兩個 CSV 網址貼到下方引號內：
 
-const MORPHEMES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDfXbyoiMov_zs6l3CqeUK8Er6__Elf_dZuuRhgXVOi7Ve9CkL-xng4vnvsD7xbGxm_GywDm7rVtqM/pub?gid=2125246537&single=true&output=csv";
-const WORDS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDfXbyoiMov_zs6l3CqeUK8Er6__Elf_dZuuRhgXVOi7Ve9CkL-xng4vnvsD7xbGxm_GywDm7rVtqM/pub?gid=382080158&single=true&output=csv";
+const MORPHEMES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDfXbyoiMov_zs6l3CqeUK8Er6__Elf_dZuuRhgXVOi7Ve9CkL-xng4vnvsD7xbGxm_GywDm7rVtqM/pubhtml?gid=2125246537&single=true";
+const WORDS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDfXbyoiMov_zs6l3CqeUK8Er6__Elf_dZuuRhgXVOi7Ve9CkL-xng4vnvsD7xbGxm_GywDm7rVtqM/pubhtml?gid=382080158&single=true";
 
 (function initPureCloudLexicon() {
   window.MORPHEMES = [];
