@@ -511,6 +511,22 @@
         link.addEventListener('click', saveSearchReturnState);
       });
     })();
+
+    window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'SYNC_WORD' && typeof event.data.word === 'string') {
+    const incomingWord = event.data.word.trim();
+    if (!incomingWord) return;
+    const currentParams = new URLSearchParams(window.location.search);
+    if ((currentParams.get('q') || '').trim() !== incomingWord) {
+      const nextUrl = 'search.html?q=' + encodeURIComponent(incomingWord);
+      window.history.replaceState(null, '', nextUrl);
+      if (typeof window.__renderLexiconPage === 'function') {
+        window.__renderLexiconPage();
+      }
+    }
+  }
+});
+    
   </script>
 </body>
 </html>
